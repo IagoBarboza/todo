@@ -101,13 +101,6 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
         .filter(t => t.id !== taskToMoveId)
         .reduce<ITask[]>((acc, t) => t.id === previousTaskId ? [...acc, t, taskToMove] : [...acc, t], [])
     })))
-
-
-
-    // setSections(currentSections => currentSections.map(section => ({
-    //   ...section,
-    //   tasks: section.tasks
-    // })))
   }
 
   function drag(e: any) {
