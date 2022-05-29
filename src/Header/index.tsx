@@ -2,24 +2,24 @@ import { useContext } from 'react'
 import styled from 'styled-components'
 import { TodoContext } from '../common/TodoContext'
 import { v4 as uuidv4 } from 'uuid'
+import { Button } from 'react-bootstrap'
 
 const Container = styled.section`
   position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   background: gray;
+  height: 60px;
 `
 
 const Title = styled.h1`
   text-align: center;
 `
 
-const AddButton = styled.button`
+const AddButton = styled(Button)`
   position: absolute;
-  right: 0px;
-  height: 100%;
-  width: 60px;
-  font-size: 40px;
+  right: 10px;
   cursor: pointer;
 `
 
@@ -32,8 +32,13 @@ export default function Header (): JSX.Element {
 
   return (
     <Container>
-      <Title>TODO</Title>
-      <AddButton onClick={handleAddSection}>+</AddButton>
+      <Title>Todo</Title>
+      <AddButton
+        onClick={handleAddSection}
+        size="lg"
+      >
+        +
+      </AddButton>
     </Container>
   )
 }

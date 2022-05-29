@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { TodoContext, ISection } from '../../common/TodoContext'
 import Task from './Task'
 import { v4 as uuidv4 } from 'uuid'
+import { Button } from 'react-bootstrap'
 
 const Container = styled.div`
   display: flex;
@@ -24,14 +25,7 @@ const HeaderDescription = styled.h4`
   flex: 1;
 `
 
-const HeaderActions = styled.div`
-  display: flex;
-`
-
-const ActionButton = styled.button`
-  height: 30px;
-  font-size: 15px;
-  cursor: pointer;
+const ActionButton = styled(Button)`
   margin-left: 10px;
 `
 
@@ -65,6 +59,10 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
     else setSelectedTasksIds(selectedTasksIds.filter(tid => tid !== taskId))
   }
 
+  function handleEditTask (taskId: string) {
+    console.log('handleEditTask', taskId)
+  }
+
   function handleRemoveSelected () {
     setSections(currentSections => currentSections.map(section => section.id === id
       ? {
@@ -88,13 +86,21 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
     <Container>
       <Header>
         <HeaderDescription>{description}</HeaderDescription>
-        <HeaderActions>
+        <div>
           <ActionButton onClick={handleAddTask}>Add Task</ActionButton>
-          {hasSelectedTasks && <ActionButton onClick={handleRemoveSelected}>
+          {hasSelectedTasks && <ActionButton
+            variant="secondary"
+            onClick={handleRemoveSelected}
+          >
             Remove Selected Tasks
           </ActionButton>}
-          <ActionButton onClick={handleRemoveSection}>Remove Section</ActionButton>
-        </HeaderActions>
+          <ActionButton
+            variant="secondary"
+            onClick={handleRemoveSection}
+          >
+            Remove Section
+          </ActionButton>
+        </div>
       </Header>
       <Tasks>
         {tasks.map(task => (
@@ -102,6 +108,7 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
             key={task.id}
             {...task}
             onSelection={handleTaskSelection}
+            onEdit={handleEditTask}
             onRemove={handleRemoveTask}
           />
         ))}
