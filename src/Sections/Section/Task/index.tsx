@@ -30,7 +30,7 @@ const ActionButton = styled(Button)`
 
 interface TaskProps extends ITask {
   onSelection: (id: string, value: boolean) => void
-  onEdit: (id: string) => void
+  onEdit: (task: ITask) => void
   onRemove: (id: string) => void
 }
 
@@ -49,7 +49,7 @@ export default function Task ({ id, description, onSelection, onEdit, onRemove }
         <ActionButton
           variant="secondary"
           size="sm"
-          onClick={() => onEdit(id)
+          onClick={() => onEdit({ id, description })
         }>
           Edit
         </ActionButton>

@@ -1,9 +1,10 @@
 import { useContext, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { TodoContext, ISection } from '../../common/TodoContext'
+import { TodoContext, ISection, ITask } from '../../common/TodoContext'
 import Task from './Task'
 import { v4 as uuidv4 } from 'uuid'
 import { Button } from 'react-bootstrap'
+import EditDialog from './EditDialog'
 
 const Container = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const Tasks = styled.div`
 export default function Section ({id, description, tasks}: ISection): JSX.Element {
   const { setSections } = useContext(TodoContext)
   const [ selectedTasksIds, setSelectedTasksIds ] = useState<string[]>([])
+  const [ resourceToEdit, setResourceToEdit ] = useState<ISection | ITask | null>(null)
 
   const hasSelectedTasks = useMemo(() => !!selectedTasksIds.length, [selectedTasksIds])
 
@@ -57,10 +59,6 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
   function handleTaskSelection (taskId: string, checked: boolean) {
     if (checked) setSelectedTasksIds([...selectedTasksIds, taskId])
     else setSelectedTasksIds(selectedTasksIds.filter(tid => tid !== taskId))
-  }
-
-  function handleEditTask (taskId: string) {
-    console.log('handleEditTask', taskId)
   }
 
   function handleRemoveSelected () {
@@ -96,6 +94,12 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
           </ActionButton>}
           <ActionButton
             variant="secondary"
+            onClick={() => setResourceToEdit({ id, description, tasks })}
+          >
+            Edit Section
+          </ActionButton>
+          <ActionButton
+            variant="secondary"
             onClick={handleRemoveSection}
           >
             Remove Section
@@ -108,11 +112,15 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
             key={task.id}
             {...task}
             onSelection={handleTaskSelection}
-            onEdit={handleEditTask}
+            onEdit={setResourceToEdit}
             onRemove={handleRemoveTask}
           />
         ))}
       </Tasks>
+      <EditDialog
+        resourceToEdit={resourceToEdit}
+        onHide={() => setResourceToEdit(null)}
+      />
     </Container>
   )
 }
