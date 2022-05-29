@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { TodoContext, ISection } from '../../common/TodoContext'
 import Task from './Task'
@@ -26,7 +26,6 @@ const HeaderDescription = styled.h4`
 
 const HeaderActions = styled.div`
   display: flex;
-  background: green;
 `
 
 const AddButton = styled.button`
@@ -36,6 +35,13 @@ const AddButton = styled.button`
   cursor: pointer;
 `
 
+const RemoveSelectedButton = styled.button`
+  height: 30px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-left: 10px;
+`
+
 const Tasks = styled.div`
   display: flex;
   flex-direction: column;
@@ -43,6 +49,9 @@ const Tasks = styled.div`
 
 export default function Section ({id, description, tasks}: ISection): JSX.Element {
   const { setSections } = useContext(TodoContext)
+  const [ selectedTasksIds, setSelectedTasksIds ] = useState<string[]>([])
+
+  const hasSelectedTasks = useMemo(() => !!selectedTasksIds.length, [selectedTasksIds])
 
   function handleAddTask () {
     setSections(currentSections => currentSections.map(section => section.id === id 
@@ -55,7 +64,27 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
     setSections(currentSections => currentSections.map(section => section.id === id 
       ? {...section, tasks: section.tasks.filter(t => t.id !== taskToRemove)} 
       : section
-    ))  
+    ))
+  }
+
+  function handleTaskSelection (taskId: string, checked: boolean) {
+    if (checked) setSelectedTasksIds([...selectedTasksIds, taskId])
+    else setSelectedTasksIds(selectedTasksIds.filter(tid => tid !== taskId))
+  }
+
+  function handleRemoveSelected () {
+    setSections(currentSections => currentSections.map(section => section.id === id
+      ? {
+          ...section,
+          tasks: section.tasks.filter(task => 
+            !selectedTasksIds.find(tid => 
+              task.id === tid 
+            )
+          )
+        } 
+      : section
+    ))
+    setSelectedTasksIds([])
   }
 
   return (
@@ -64,6 +93,11 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
         <HeaderDescription>{description}</HeaderDescription>
         <HeaderActions>
           <AddButton onClick={handleAddTask}>+</AddButton>
+          {hasSelectedTasks && <RemoveSelectedButton
+            onClick={handleRemoveSelected}
+          >
+            Remove Selected
+          </RemoveSelectedButton>}
         </HeaderActions>
       </Header>
       <Tasks>
@@ -71,6 +105,7 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
           <Task
             key={task.id}
             {...task}
+            onSelection={handleTaskSelection}
             onRemove={handleRemoveTask}
           />
         ))}

@@ -30,14 +30,21 @@ const RemoveButton = styled.button`
 `
 
 interface TaskProps extends ITask {
+  onSelection: (id: string, value: boolean) => void
   onRemove: (id: string) => void
 }
 
 
-export default function Task ({ id, description, onRemove }: TaskProps): JSX.Element {
+export default function Task ({ id, description, onSelection, onRemove }: TaskProps): JSX.Element {
 
   return (
     <Container>
+      <div>
+        <input
+          type="checkbox"
+          onChange={e => onSelection(id, e.target.checked)}
+        />
+      </div>
       <Description>{description}</Description>
       <Actions>
         <RemoveButton onClick={() => onRemove(id)}>-</RemoveButton>
