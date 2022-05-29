@@ -6,6 +6,7 @@ import Section from './Section'
 const Container = styled.section`
   display: flex;
   flex-direction: column;
+  padding: 20px;
 `
 
 export default function Sections (): JSX.Element {

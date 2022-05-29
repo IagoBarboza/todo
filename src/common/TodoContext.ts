@@ -1,19 +1,19 @@
 import { createContext, Dispatch, SetStateAction, useContext } from 'react'
 
-export interface TodoItem {
+export interface ITask {
   id: string
   description: string
 }
 
-export interface TodoSection {
+export interface ISection {
   id: string
   description: string
-  items: TodoItem[]
+  tasks: ITask[]
 }
 
 export interface TodoContextProps {
-  sections: TodoSection[]
-  setSections: Dispatch<SetStateAction<TodoSection[]>>
+  sections: ISection[]
+  setSections: Dispatch<SetStateAction<ISection[]>>
 }
 
 // @ts-expect-error

@@ -27,7 +27,7 @@ export default function Header (): JSX.Element {
   const {setSections} = useContext(TodoContext)
 
   function handleAddSection() {
-    setSections(currentSections => [...currentSections, { id: uuidv4(), description: 'New section', items: [] }])
+    setSections(currentSections => [...currentSections, { id: uuidv4(), description: 'New section', tasks: [] }])
   }
 
   return (
