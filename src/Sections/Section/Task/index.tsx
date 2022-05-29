@@ -13,10 +13,35 @@ const Container = styled.section`
   }
 `
 
-export default function Task ({description}: ITask): JSX.Element {
+const Description = styled.h4`
+  flex: 1;
+`
+
+const Actions = styled.div`
+  display: flex;
+  background: green;
+`
+
+const RemoveButton = styled.button`
+  height: 30px;
+  width: 30px;
+  font-size: 20px;
+  cursor: pointer;
+`
+
+interface TaskProps extends ITask {
+  onRemove: (id: string) => void
+}
+
+
+export default function Task ({ id, description, onRemove }: TaskProps): JSX.Element {
+
   return (
     <Container>
-      {description}
+      <Description>{description}</Description>
+      <Actions>
+        <RemoveButton onClick={() => onRemove(id)}>-</RemoveButton>
+      </Actions>
     </Container>
   )
 }

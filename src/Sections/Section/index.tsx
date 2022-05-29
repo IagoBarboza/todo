@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import styled from 'styled-components'
 import { TodoContext, ISection } from '../../common/TodoContext'
-import SectionItem from './Task'
+import Task from './Task'
 import { v4 as uuidv4 } from 'uuid'
 
 const Container = styled.div`
@@ -36,7 +36,7 @@ const AddButton = styled.button`
   cursor: pointer;
 `
 
-const Items = styled.div`
+const Tasks = styled.div`
   display: flex;
   flex-direction: column;
 `
@@ -44,11 +44,18 @@ const Items = styled.div`
 export default function Section ({id, description, tasks}: ISection): JSX.Element {
   const { setSections } = useContext(TodoContext)
 
-  function handleAddItem () {
+  function handleAddTask () {
     setSections(currentSections => currentSections.map(section => section.id === id 
       ? {...section, tasks: [...section.tasks, { id: uuidv4(), description: 'New Task' }]} 
       : section
     )) 
+  }
+
+  function handleRemoveTask (taskToRemove: string) {
+    setSections(currentSections => currentSections.map(section => section.id === id 
+      ? {...section, tasks: section.tasks.filter(t => t.id !== taskToRemove)} 
+      : section
+    ))  
   }
 
   return (
@@ -56,14 +63,18 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
       <Header>
         <HeaderDescription>{description}</HeaderDescription>
         <HeaderActions>
-          <AddButton onClick={handleAddItem}>+</AddButton>
+          <AddButton onClick={handleAddTask}>+</AddButton>
         </HeaderActions>
       </Header>
-      <Items>
+      <Tasks>
         {tasks.map(task => (
-          <SectionItem key={task.id} {...task} />
+          <Task
+            key={task.id}
+            {...task}
+            onRemove={handleRemoveTask}
+          />
         ))}
-      </Items>
+      </Tasks>
     </Container>
   )
 }
