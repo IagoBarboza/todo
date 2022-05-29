@@ -28,14 +28,7 @@ const HeaderActions = styled.div`
   display: flex;
 `
 
-const AddButton = styled.button`
-  height: 30px;
-  width: 30px;
-  font-size: 20px;
-  cursor: pointer;
-`
-
-const RemoveSelectedButton = styled.button`
+const ActionButton = styled.button`
   height: 30px;
   font-size: 15px;
   cursor: pointer;
@@ -87,17 +80,20 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
     setSelectedTasksIds([])
   }
 
+  function handleRemoveSection () {
+    setSections(currentSections => currentSections.filter(section => section.id !== id))
+  }
+
   return (
     <Container>
       <Header>
         <HeaderDescription>{description}</HeaderDescription>
         <HeaderActions>
-          <AddButton onClick={handleAddTask}>+</AddButton>
-          {hasSelectedTasks && <RemoveSelectedButton
-            onClick={handleRemoveSelected}
-          >
-            Remove Selected
-          </RemoveSelectedButton>}
+          <ActionButton onClick={handleAddTask}>Add Task</ActionButton>
+          {hasSelectedTasks && <ActionButton onClick={handleRemoveSelected}>
+            Remove Selected Tasks
+          </ActionButton>}
+          <ActionButton onClick={handleRemoveSection}>Remove Section</ActionButton>
         </HeaderActions>
       </Header>
       <Tasks>

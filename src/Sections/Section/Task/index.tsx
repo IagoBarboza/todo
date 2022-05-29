@@ -36,7 +36,6 @@ interface TaskProps extends ITask {
 
 
 export default function Task ({ id, description, onSelection, onRemove }: TaskProps): JSX.Element {
-
   return (
     <Container>
       <div>
