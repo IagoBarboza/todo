@@ -37,7 +37,7 @@ const Tasks = styled.div`
 `
 
 export default function Section ({id, description, tasks}: ISection): JSX.Element {
-  const { setSections } = useContext(TodoContext)
+  const { sections, setSections } = useContext(TodoContext)
   const [ selectedTasksIds, setSelectedTasksIds ] = useState<string[]>([])
   const [ resourceToEdit, setResourceToEdit ] = useState<ISection | ITask | null>(null)
 
@@ -89,16 +89,25 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
     e.preventDefault()
     const previousTaskId = e.target.attributes['drop-id'].value;
     const taskToMoveId = e.dataTransfer.getData('text')
-    const taskToMove = tasks.find(task => task.id === taskToMoveId) as ITask
-    setSections(currentSections => currentSections.map(section => section.id === id
-      ? {
-        ...section,
-        tasks: section.tasks
-          .filter(t => t.id !== taskToMoveId)  
-          .reduce<ITask[]>((acc, t) => t.id === previousTaskId ? [...acc, t, taskToMove] : [...acc, t], [])
-      }
-      : section
-    ))
+    let taskToMove: ITask 
+    
+    sections.forEach(section => {
+      if (!taskToMove) taskToMove = section.tasks.find(task => task.id === taskToMoveId) as ITask
+    })
+    
+    setSections(currentSections => currentSections.map(section => ({
+      ...section,
+      tasks: section.tasks
+        .filter(t => t.id !== taskToMoveId)
+        .reduce<ITask[]>((acc, t) => t.id === previousTaskId ? [...acc, t, taskToMove] : [...acc, t], [])
+    })))
+
+
+
+    // setSections(currentSections => currentSections.map(section => ({
+    //   ...section,
+    //   tasks: section.tasks
+    // })))
   }
 
   function drag(e: any) {
