@@ -81,6 +81,27 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
     setSections(currentSections => currentSections.filter(section => section.id !== id))
   }
 
+  function allowDrop(e: any) {
+    e.preventDefault()
+  }
+
+  function drop(e: any) {
+    // e.preventDefault()
+    const previousTaskId = e.target.attributes['drop-id'].value;
+    const taskToMoveId = e.dataTransfer.getData('text')
+    const taskToMove = tasks.find(task => task.id === taskToMoveId) as ITask
+    setSections(currentSections => currentSections.map(section => section.id === id
+      ? {
+        ...section,
+        tasks: section.tasks
+          .filter(t => t.id !== taskToMoveId)  
+          .reduce<ITask[]>((acc, t) => t.id === previousTaskId ? [...acc, t, taskToMove] : [...acc, t], [])
+          
+      }
+      : section
+    ))
+  }
+
   return (
     <Container>
       <Header>
@@ -108,14 +129,23 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
         </div>
       </Header>
       <Tasks>
-        {tasks.map(task => (
-          <Task
-            key={task.id}
-            {...task}
-            onSelection={handleTaskSelection}
-            onEdit={setResourceToEdit}
-            onRemove={handleRemoveTask}
-          />
+        {tasks.map((task, index) => (
+          <>
+            <Task
+              key={task.id}
+              {...task}
+              onSelection={handleTaskSelection}
+              onEdit={setResourceToEdit}
+              onRemove={handleRemoveTask}
+            />
+            <div
+              key={index}
+              drop-id={task.id}
+              style={{ height: '20px' }}
+              onDrop={drop}
+              onDragOver={allowDrop}
+            ></div>
+          </>
         ))}
       </Tasks>
       <EditDialog

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { ITask } from '../../../common/TodoContext'
 import { Button } from 'react-bootstrap'
+import { BaseSyntheticEvent } from 'react'
 
 const Container = styled.div<{ done: boolean }>`
   display: flex;
@@ -36,8 +37,13 @@ interface TaskProps extends ITask {
 
 
 export default function Task ({ id, description, done, onSelection, onEdit, onRemove }: TaskProps): JSX.Element {
+
+  function drag(e: any) {
+    e.dataTransfer.setData("text", e.target.id)
+  }
+
   return (
-    <Container done={done}>
+    <Container id={id} done={done} draggable onDragStart={drag}>
       <div>
         <input
           type="checkbox"
