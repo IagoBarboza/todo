@@ -67,15 +67,17 @@ export default function EditDialog ({ resourceToEdit, onHide }: Props) {
       </Modal.Header>
 
       <Modal.Body>
-        <CheckboxContainer>
-          <Checkbox
-            type="checkbox"
-            // @ts-expect-error
-            checked={resource?.done}
-            onChange={e => setResource({ ...resource, done: e.target.checked })}
-          />
-          <div>Done</div>
-        </CheckboxContainer>
+        {resourceType === 'task' && (
+          <CheckboxContainer>
+            <Checkbox
+              type="checkbox"
+              // @ts-expect-error
+              checked={resource?.done}
+              onChange={e => setResource({ ...resource, done: e.target.checked })}
+            />
+            <div>Done</div>
+          </CheckboxContainer>
+        )}
         <Form.Group>
           <Form.Label>Description</Form.Label>
           <Form.Control

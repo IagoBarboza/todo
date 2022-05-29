@@ -14,6 +14,7 @@ const Container = styled.div`
   border: 1px solid #E3E3E3;
   margin-bottom: 15px;
   border-radius: 5px;
+  cursor: pointer;
 `
 
 const Header = styled.div`
