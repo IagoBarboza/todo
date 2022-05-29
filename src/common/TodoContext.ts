@@ -3,6 +3,7 @@ import { createContext, Dispatch, SetStateAction, useContext } from 'react'
 export interface ITask {
   id: string
   description: string
+  done: boolean
 }
 
 export interface ISection {

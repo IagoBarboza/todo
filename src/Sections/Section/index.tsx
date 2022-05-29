@@ -10,9 +10,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 60px;
-  padding: 10px;
-  border: 1px solid gray;
+  padding: 15px;
+  border: 1px solid #E3E3E3;
   margin-bottom: 15px;
+  border-radius: 5px;
 `
 
 const Header = styled.div`
@@ -44,7 +45,7 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
 
   function handleAddTask () {
     setSections(currentSections => currentSections.map(section => section.id === id 
-      ? {...section, tasks: [...section.tasks, { id: uuidv4(), description: 'New Task' }]} 
+      ? {...section, tasks: [...section.tasks, { id: uuidv4(), description: 'New Task', done: false }]} 
       : section
     )) 
   }

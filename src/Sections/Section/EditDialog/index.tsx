@@ -2,6 +2,19 @@ import { useState, useMemo, useEffect, useContext } from 'react'
 import { Form, Modal } from 'react-bootstrap'
 import { ISection, ITask, TodoContext } from '../../../common/TodoContext'
 import { Button } from 'react-bootstrap'
+import styled from 'styled-components'
+
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+`
+
+const Checkbox = styled.input`
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+`
 
 interface Props {
   resourceToEdit: ISection | ITask | null
@@ -9,12 +22,12 @@ interface Props {
 }
 
 export default function EditDialog ({ resourceToEdit, onHide }: Props) {
-  const [resource, setResource] = useState(resourceToEdit || {id: '', description: ''})
+  const [resource, setResource] = useState(resourceToEdit || { id: '', description: '', done: false })
   const { setSections } = useContext(TodoContext)
 
   useEffect(() => {
     if(resourceToEdit) setResource(resourceToEdit)
-    else setResource({ id: '', description: ''})
+    else setResource({ id: '', description: '', done: false })
   }, [resourceToEdit])
   
   const resourceType = useMemo(() => {
@@ -36,7 +49,7 @@ export default function EditDialog ({ resourceToEdit, onHide }: Props) {
         currentSections.map(section => ({
             ...section,
             tasks: section.tasks.map(task => task.id === resourceToEdit?.id 
-              ? {...task, description: resource.description}
+              ? {...task, ...resource}
               : task  
             )
           })
@@ -54,6 +67,15 @@ export default function EditDialog ({ resourceToEdit, onHide }: Props) {
       </Modal.Header>
 
       <Modal.Body>
+        <CheckboxContainer>
+          <Checkbox
+            type="checkbox"
+            // @ts-expect-error
+            checked={resource?.done}
+            onChange={e => setResource({ ...resource, done: e.target.checked })}
+          />
+          <div>Done</div>
+        </CheckboxContainer>
         <Form.Group>
           <Form.Label>Description</Form.Label>
           <Form.Control

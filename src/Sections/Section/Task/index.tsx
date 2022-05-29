@@ -2,12 +2,12 @@ import styled from 'styled-components'
 import { ITask } from '../../../common/TodoContext'
 import { Button } from 'react-bootstrap'
 
-const Container = styled.section`
+const Container = styled.div<{ done: boolean }>`
   display: flex;
   height: 65px;
   padding: 10px;
   align-items: center;
-  background: #E3E3E3;
+  background: ${props => props.done ? '#93E792' : '#E3E3E3'};
   margin-bottom: 5px;
   border-radius: 5px;
   &:hover {
@@ -35,9 +35,9 @@ interface TaskProps extends ITask {
 }
 
 
-export default function Task ({ id, description, onSelection, onEdit, onRemove }: TaskProps): JSX.Element {
+export default function Task ({ id, description, done, onSelection, onEdit, onRemove }: TaskProps): JSX.Element {
   return (
-    <Container>
+    <Container done={done}>
       <div>
         <input
           type="checkbox"
@@ -49,7 +49,7 @@ export default function Task ({ id, description, onSelection, onEdit, onRemove }
         <ActionButton
           variant="secondary"
           size="sm"
-          onClick={() => onEdit({ id, description })
+          onClick={() => onEdit({ id, description, done })
         }>
           Edit
         </ActionButton>
