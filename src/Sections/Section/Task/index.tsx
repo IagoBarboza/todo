@@ -35,7 +35,6 @@ interface TaskProps extends ITask {
   onRemove: (id: string) => void
 }
 
-
 export default function Task ({ id, description, done, onSelection, onEdit, onRemove }: TaskProps): JSX.Element {
 
   function drag(e: any) {
@@ -43,7 +42,12 @@ export default function Task ({ id, description, done, onSelection, onEdit, onRe
   }
 
   return (
-    <Container id={id} done={done} draggable onDragStart={drag}>
+    <Container
+      id={id}
+      done={done}
+      draggable
+      onDragStart={drag}
+    >
       <div>
         <input
           type="checkbox"

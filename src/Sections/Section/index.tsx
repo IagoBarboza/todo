@@ -86,7 +86,7 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
   }
 
   function drop(e: any) {
-    // e.preventDefault()
+    e.preventDefault()
     const previousTaskId = e.target.attributes['drop-id'].value;
     const taskToMoveId = e.dataTransfer.getData('text')
     const taskToMove = tasks.find(task => task.id === taskToMoveId) as ITask
@@ -96,14 +96,21 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
         tasks: section.tasks
           .filter(t => t.id !== taskToMoveId)  
           .reduce<ITask[]>((acc, t) => t.id === previousTaskId ? [...acc, t, taskToMove] : [...acc, t], [])
-          
       }
       : section
     ))
   }
 
+  function drag(e: any) {
+    e.dataTransfer.setData("text", e.target.id)
+  }
+
   return (
-    <Container>
+    <Container
+      id={id}
+      draggable
+      onDragStart={drag}
+    >
       <Header>
         <HeaderDescription>{description}</HeaderDescription>
         <div>
