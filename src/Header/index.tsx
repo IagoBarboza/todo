@@ -4,17 +4,19 @@ import { TodoContext } from '../common/TodoContext'
 import { v4 as uuidv4 } from 'uuid'
 import { Button } from 'react-bootstrap'
 
-const Container = styled.section`
+const Container = styled.header`
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: gray;
+  background: #20232a;
   height: 60px;
 `
 
-const Title = styled.h1`
+const Title = styled.div`
   text-align: center;
+  color: white;
+  font-size: 20px;
 `
 
 const AddButton = styled(Button)`
@@ -32,12 +34,12 @@ export default function Header (): JSX.Element {
 
   return (
     <Container>
-      <Title>Todo</Title>
+      <Title>Todo App</Title>
       <AddButton
         onClick={handleAddSection}
-        size="lg"
+        size="md"
       >
-        +
+        Add Section
       </AddButton>
     </Container>
   )
