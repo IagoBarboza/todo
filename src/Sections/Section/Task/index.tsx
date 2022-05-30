@@ -6,9 +6,10 @@ import { BaseSyntheticEvent } from 'react'
 const Container = styled.div<{ done: boolean }>`
   display: flex;
   height: 65px;
-  padding: 10px;
+  padding: 15px;
   align-items: center;
-  background: ${props => props.done ? '#93E792' : '#E3E3E3'};
+  background: ${props => props.done ? '#93E792' : 'white'};
+  border: 1px solid #cfcfcf;
   margin-bottom: 5px;
   border-radius: 5px;
   &:hover {

@@ -10,8 +10,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 60px;
-  padding: 15px;
-  border: 1px solid #E3E3E3;
+  padding: 20px;
+  // border: 2px solid #20232a;
+  background: #e8e8e8;
   margin-bottom: 15px;
   border-radius: 5px;
   cursor: pointer;
@@ -22,10 +23,14 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 60px;
+  margin-bottom: 50px;
 `
 
-const HeaderDescription = styled.h4`
+const HeaderDescription = styled.div`
   flex: 1;
+  font-size: 23px;
+  font-weight: 300;
+  color: #20232a;
 `
 
 const ActionButton = styled(Button)`
