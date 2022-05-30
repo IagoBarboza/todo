@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { TodoContext, ISection, ITask } from '../../common/TodoContext'
 import Task from './Task'
 import { v4 as uuidv4 } from 'uuid'
-import { Button } from 'react-bootstrap'
+import { Button, Dropdown } from 'react-bootstrap'
 import EditDialog from './EditDialog'
 
 const Container = styled.div`
@@ -121,27 +121,17 @@ export default function Section ({id, description, tasks}: ISection): JSX.Elemen
     >
       <Header>
         <HeaderDescription>{description}</HeaderDescription>
-        <div>
-          <ActionButton onClick={handleAddTask}>Add Task</ActionButton>
-          {hasSelectedTasks && <ActionButton
-            variant="secondary"
-            onClick={handleRemoveSelected}
-          >
-            Remove Selected Tasks
-          </ActionButton>}
-          <ActionButton
-            variant="secondary"
-            onClick={() => setResourceToEdit({ id, description, tasks })}
-          >
-            Edit Section
-          </ActionButton>
-          <ActionButton
-            variant="secondary"
-            onClick={handleRemoveSection}
-          >
-            Remove Section
-          </ActionButton>
-        </div>
+        <Dropdown>
+          <Dropdown.Toggle variant="secondary">
+            Actions
+          </Dropdown.Toggle>
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={handleAddTask}>Add Task</Dropdown.Item>
+            <Dropdown.Item onClick={() => setResourceToEdit({ id, description, tasks })}>Edit Section</Dropdown.Item>
+            <Dropdown.Item onClick={handleRemoveSection}>Remove Section</Dropdown.Item>
+            {hasSelectedTasks && <Dropdown.Item onClick={handleRemoveSelected}>Remove Selected Tasks</Dropdown.Item>}
+          </Dropdown.Menu>
+        </Dropdown>
       </Header>
       <Tasks>
         {tasks.map((task, index) => (

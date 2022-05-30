@@ -17,6 +17,13 @@ const Container = styled.div<{ done: boolean }>`
   }
 `
 
+const Checkbox = styled.input`
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+  cursor: pointer;
+`
+
 const Description = styled.div`
   flex: 1;
   margin-left: 10px;
@@ -49,12 +56,10 @@ export default function Task ({ id, description, done, onSelection, onEdit, onRe
       draggable
       onDragStart={drag}
     >
-      <div>
-        <input
-          type="checkbox"
-          onChange={e => onSelection(id, e.target.checked)}
-        />
-      </div>
+      <Checkbox
+        type="checkbox"
+        onChange={e => onSelection(id, e.target.checked)}
+      />
       <Description>{description}</Description>
       <Actions>
         <ActionButton
